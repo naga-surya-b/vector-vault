@@ -8,7 +8,7 @@ RUN cd frontend && npm ci
 COPY frontend ./frontend
 RUN cd frontend && npm run build
 
-# 2) Python runtime serving the app + built UI
+# 2) Python runtime + built UI
 FROM python:3.11-slim
 RUN apt-get update && apt-get install -y build-essential && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
