@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Build frontend first so frontend/dist exists for packaging
+      # Build frontend so 'frontend/dist' exists
       - uses: actions/setup-node@v4
         with: { node-version: '20' }
       - name: Build frontend
@@ -33,7 +33,7 @@ jobs:
           pyinstaller --onefile -n VectorVault ^
             --collect-all sentence_transformers ^
             --collect-all transformers ^
-            --add-data "app\frontend\dist;app\frontend\dist" ^
+            --add-data "frontend\dist;frontend\dist" ^
             --add-data "app;app" app\start.py
 
       - name: Upload EXE artifact
@@ -46,16 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      # Build frontend so Docker COPY frontend/dist works
-      - uses: actions/setup-node@v4
-        with: { node-version: '20' }
-      - name: Build frontend
-        run: |
-          cd frontend
-          npm ci
-          npm run build
-
+      # No need to build UI here; Dockerfile now does it
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
       - uses: docker/build-push-action@v6
