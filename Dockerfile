@@ -4,7 +4,7 @@
 FROM node:20-alpine AS ui
 WORKDIR /ui
 COPY frontend/package*.json ./frontend/
-RUN cd frontend && npm ci
+RUN cd frontend && npm install
 COPY frontend ./frontend
 RUN cd frontend && npm run build
 
