@@ -1,0 +1,20 @@
+[project]
+name = "vectorvault-pro"
+version = "0.3.0"
+description = "Private, offline document Q&A with citations (FastAPI + FAISS) + reranker + on-device LLM"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "fastapi",
+  "uvicorn[standard]",
+  "faiss-cpu",
+  "sentence-transformers",
+  "transformers",
+  "pydantic",
+  "python-multipart",
+  "pypdf",
+  "numpy"
+]
+
+[project.scripts]
+vectorvault = "app.cli:main"

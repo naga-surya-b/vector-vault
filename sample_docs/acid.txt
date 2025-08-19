@@ -1,0 +1,1 @@
+ACID is Atomicity, Consistency, Isolation, Durability.\n

@@ -1,0 +1,11 @@
+services:
+  vectorvault:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - VV_DATA_DIR=/app/data
+      - ENABLE_RERANK=0
+      - ENABLE_LLM=0
+    volumes:
+      - ./data:/app/data

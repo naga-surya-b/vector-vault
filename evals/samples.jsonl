@@ -1,0 +1,2 @@
+{"q": "What does ACID stand for?", "answer_contains": ["Atomicity", "Consistency", "Isolation", "Durability"]}
+{"q": "Which two properties ensure data is not lost and changes are valid?", "answer_contains": ["Atomicity", "Durability", "Consistency"]}
