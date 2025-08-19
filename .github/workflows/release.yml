@@ -9,29 +9,33 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+
+      # Build frontend first so frontend/dist exists for packaging
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+
       - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+        with: { python-version: '3.11' }
       - name: Install Python deps
         run: |
           python -m pip install -U pip
           pip install -r requirements.txt
           pip install pyinstaller
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: Build frontend
-        run: |
-          cd frontend
-          npm install
-          npm run build
-      - name: Build EXE (cmd shell)
+
+      - name: Build EXE (PyInstaller)
         shell: cmd
         run: |
           pyinstaller --onefile -n VectorVault ^
+            --collect-all sentence_transformers ^
+            --collect-all transformers ^
             --add-data "app\frontend\dist;app\frontend\dist" ^
             --add-data "app;app" app\start.py
+
       - name: Upload EXE artifact
         uses: actions/upload-artifact@v4
         with:
@@ -42,6 +46,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # Build frontend so Docker COPY frontend/dist works
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
       - uses: docker/build-push-action@v6
